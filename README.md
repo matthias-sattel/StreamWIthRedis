@@ -1,0 +1,1 @@
+This project is also based on information from https://medium.com/nerd-for-tech/event-driven-architecture-with-redis-streams-using-spring-boot-a81a1c9a4cde
