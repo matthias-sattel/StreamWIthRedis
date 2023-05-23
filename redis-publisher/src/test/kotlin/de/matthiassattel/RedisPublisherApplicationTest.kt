@@ -1,6 +1,6 @@
 package de.matthiassattel
 
-import de.mathiassattel.movie.MovieDetails
+import de.mathiassattel.movie.MovieRating
 import de.matthiassattel.movie.MovieEventPublisher
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -19,7 +19,7 @@ class RedisPublisherApplicationTest {
     lateinit var movieEventPublisher: MovieEventPublisher
 
     @Autowired
-    lateinit var reactiveRedisTemplate: ReactiveRedisTemplate<String, MovieDetails>
+    lateinit var reactiveRedisTemplate: ReactiveRedisTemplate<String, MovieRating>
 
     @Test
     fun testInsertIntoStream() {

@@ -1,6 +1,6 @@
 package de.matthiassattel.movie
 
-import de.mathiassattel.movie.MovieDetails
+import de.mathiassattel.movie.MovieRating
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -36,27 +36,27 @@ class MovieEventPublisher() {
     @Bean
     fun reactiveRedisTemplate(
         redisConnectionFactory: ReactiveRedisConnectionFactory
-    ): ReactiveRedisTemplate<String, MovieDetails> {
+    ): ReactiveRedisTemplate<String, MovieRating> {
         val keySerializer = StringRedisSerializer()
-        val valueSerializer: Jackson2JsonRedisSerializer<MovieDetails> =
-            Jackson2JsonRedisSerializer(MovieDetails::class.java)
-        val builder: RedisSerializationContext.RedisSerializationContextBuilder<String, MovieDetails> =
-            RedisSerializationContext.newSerializationContext<String, MovieDetails>(keySerializer)
-        val context: RedisSerializationContext<String, MovieDetails> = builder.value(valueSerializer).build()
-        return ReactiveRedisTemplate<String, MovieDetails>(redisConnectionFactory, context)
+        val valueSerializer: Jackson2JsonRedisSerializer<MovieRating> =
+            Jackson2JsonRedisSerializer(MovieRating::class.java)
+        val builder: RedisSerializationContext.RedisSerializationContextBuilder<String, MovieRating> =
+            RedisSerializationContext.newSerializationContext<String, MovieRating>(keySerializer)
+        val context: RedisSerializationContext<String, MovieRating> = builder.value(valueSerializer).build()
+        return ReactiveRedisTemplate<String, MovieRating>(redisConnectionFactory, context)
     }
 
     //@Scheduled(fixedRateString = "\${publish.rate}")
-    fun publishEvent(reactiveRedisTemplate: ReactiveRedisTemplate<String, MovieDetails>) {
-        val movieDetails: MovieDetails = movieRepository!!.getRandomMovie()
-        System.out.println("Movie Details :: ${movieDetails.movie.name}")
+    fun publishEvent(reactiveRedisTemplate: ReactiveRedisTemplate<String, MovieRating>) {
+        val movieRating: MovieRating = movieRepository!!.getRandomMovie()
+        System.out.println("Movie Details :: ${movieRating.movie.name}")
         System.out.println("Stream Key is :: $streamKey")
-        val record: ObjectRecord<String, MovieDetails> = StreamRecords
+        val record: ObjectRecord<String, MovieRating> = StreamRecords
             .newRecord()
-            .ofObject(movieDetails)
+            .ofObject(movieRating)
             .withStreamKey(streamKey)
         reactiveRedisTemplate
-            .opsForStream<String, MovieDetails>()
+            .opsForStream<String, MovieRating>()
             .add(record)
             .subscribe(System.out::println)
         atomicInteger.incrementAndGet()

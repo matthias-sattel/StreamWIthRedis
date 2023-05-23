@@ -1,7 +1,7 @@
 package de.matthiassattel.movie
 
 import de.mathiassattel.movie.Movie
-import de.mathiassattel.movie.MovieDetails
+import de.mathiassattel.movie.MovieRating
 import org.springframework.stereotype.Repository
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
@@ -40,13 +40,13 @@ class MovieRepository {
         Movie(25, "Snatch", "Columbia Pictures")
     ).collect(Collectors.toList())
 
-    fun getRandomMovie(): MovieDetails {
+    fun getRandomMovie(): MovieRating {
         val index: Int = ThreadLocalRandom.current().nextInt(0, 25)
         val movie = MOVIE_LIST[index]
         val random = Random()
         val value: Int = random.ints(0, 1000).findFirst().getAsInt()
         val rating: Double = random.doubles(1.0, 10.0).findFirst().getAsDouble()
-        return MovieDetails(movie, value % 2 == 0, value % 2 == 1, rating)
+        return MovieRating(movie, value % 2 == 0, value % 2 == 1, rating)
     }
 
 }

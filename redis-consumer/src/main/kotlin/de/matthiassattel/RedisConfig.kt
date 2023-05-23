@@ -1,6 +1,6 @@
 package de.matthiassattel
 
-import de.mathiassattel.movie.MovieDetails
+import de.mathiassattel.movie.MovieRating
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,7 +15,7 @@ class RedisConfig {
     @Value("\${stream.key}")
     private val streamKey: String = ""
 
-    private val streamListener: StreamListener<String, ObjectRecord<String, MovieDetails>>? = null
+    private val streamListener: StreamListener<String, ObjectRecord<String, MovieRating>>? = null
 
     @Bean
     fun redisConnectionFactory(): LettuceConnectionFactory? {
